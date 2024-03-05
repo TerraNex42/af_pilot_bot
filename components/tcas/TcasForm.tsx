@@ -16,13 +16,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Slider } from "../ui/slider";
-type SliderProps = React.ComponentProps<typeof Slider>
+import { Badge } from "../ui/badge";
+import { useState } from "react";
+type SliderProps = React.ComponentProps<typeof Slider>;
 
 const formSchema = z.object({
   callsign: z.string().min(4, {
     message: "Callsign should have the next form XXXZZZ(ZZ)",
   }),
-  range: z.number().safe().min(5).max(30)
+  range: z.number().safe().min(5).max(30),
 });
 
 export default function TcasSearch() {
@@ -31,54 +33,61 @@ export default function TcasSearch() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       callsign: "",
-      range:
+      range: 20,
     },
   });
-    return (
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="callsign"
-            render={({ field }) => (
-              <FormItem>
-                <FormDescription>
-                  Entrez un callsign valide que vous souhaitez chercher
-                </FormDescription>
+
+  const [rangeDisplay, setRangeDisplay] = useState(form.getValues("range"));
+
+  return (
+    <Form  {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 grid grid-flow-row">
+        <FormField
+          control={form.control}
+          name="callsign"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center space-x-2">
                 <FormLabel>Callsign</FormLabel>
                 <FormControl>
                   <Input placeholder="AFR007..." {...field} />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="range"
-            render={({ field }) => (
-              <FormItem>
-                <FormDescription>
-                  Entrez un callsign valide que vous souhaitez chercher
-                </FormDescription>
-                <FormLabel>Callsign</FormLabel>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="range"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center space-x-2">
+                <FormLabel>Range</FormLabel>
                 <FormControl>
-                  <Slider defaultValue={}/>
-                  
+                  <Slider
+                    defaultValue={[field.value]}
+                    onChange={field.onChange}
+                    onValueChange={(value) => setRangeDisplay(value[0])}
+                    max={30}
+                    min={5}
+                    step={1}
+                  />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
-    );
+                <Badge variant={"outline"}>{rangeDisplay}</Badge>
+              </div>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button className="place-self-end" type="submit" >Submit</Button>
+      </form>
+    </Form>
+  );
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
   }
 }
