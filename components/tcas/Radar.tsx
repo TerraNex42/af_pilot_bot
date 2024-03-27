@@ -1,5 +1,6 @@
 import * as React from "react";
 import PlaneIcon from "@/components/ui/planeicon";
+import useAircraftStore from "./store/aircraftStore";
 
 type ReceivedPosition = 
   {
@@ -8,10 +9,10 @@ type ReceivedPosition =
     variant: "plus" | "minus"
   }
 
-  const data: ReceivedPosition[] = []
 
 
 function Radar(props: React.SVGProps<SVGSVGElement>) {
+  const flightList = useAircraftStore(state => state.aircraft)
   return (
     <svg
       width={300}
@@ -37,9 +38,12 @@ function Radar(props: React.SVGProps<SVGSVGElement>) {
         />
       </g>
 
-      {data.map((el:ReceivedPosition) => (
-        <g key={el.id} transform={`translate(${el.position})`}>
-          <PlaneIcon variant={el.variant} color="blue"/>
+      {flightList.map((el, i) => (
+        <g
+          key={i}
+          transform={`translate(${el.positionRadar.x},${el.positionRadar.y})`}
+        >
+          <PlaneIcon variant={"minus"} color="blue" />
         </g>
       ))}
     </svg>
