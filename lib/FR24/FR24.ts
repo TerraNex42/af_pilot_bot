@@ -68,7 +68,7 @@ export async function getFlightDetails(flight: Flight): Promise<Flight> {
 }
 
 export async function getFlightsAround(flight: Flight, range: number): Promise<Flight[]> {
-  console.log(flight);
+  console.log("range : " + range);
   const rangeConverted = range * 1852
   if (!frApi.isLoggedIn()) {
     try {
@@ -84,12 +84,13 @@ export async function getFlightsAround(flight: Flight, range: number): Promise<F
         flight.longitude,
         rangeConverted
       );
+      console.log(bounds);
       const flightList: Flight[] = await frApi.getFlights(
         undefined,
         bounds,
         undefined,
         undefined,
-        true
+        false
       );
       return flightList || [];
     } catch (e) {

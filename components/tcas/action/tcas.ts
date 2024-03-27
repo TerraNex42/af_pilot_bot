@@ -5,14 +5,6 @@ import { getCurrentFlights, getFlightsAround } from "../../../lib/FR24/FR24";
 import { Flight } from "flightradarapi";
 import { z } from "zod";
 
-const FlightSchema = z.object({
-  callsign: z.string(),
-  aircraftType: z.string(),
-  origin: z.string(),
-  destination: z.string(),
-  altitude: z.string(),
-  heading: z.number(),
-});
 
 const formSchema = z.object({
   callsign: z.string().min(4, {
@@ -40,10 +32,9 @@ async function tcas(data: z.infer<typeof formSchema>) {
     }
 
     flights = await getCurrentFlights(airline);
-    console.log("list of flight from that airlines : \n" + flights);
     searchFlight = flights.filter((f) => f.callsign === callsign)[0];
     if (searchFlight === undefined) {
-      return "message : No flight found";
+      return JSON.stringify({message : "No flight found"});
     }
     const boundFlight = await getFlightsAround(searchFlight, data.range);
     if (boundFlight.length > 0) {
@@ -64,10 +55,12 @@ function createAircraftJson(flights: Flight[]) {
       aircraftType: flight.aircraftModel,
       origin: flight.originAirportIata,
       destination: flight.destinationAirportIata,
-      altitude: flight.altitude,
-      heading: flight.heading,
+      altitude: flight.getAltitude(),
+      speed: flight.getGroundSpeed(),
+      heading: flight.getHeading()
     };
   });
   const jsonList = JSON.stringify(listAircraft);
+  console.log(jsonList);
   return jsonList;
 }

@@ -3,21 +3,13 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { devtools } from "zustand/middleware";
 import { z } from "zod";
-
-const FlightSchema = z.object({
-  callsign: z.string(),
-  aircraftType: z.string(),
-  origin: z.string(),
-  destination: z.string(),
-  altitude: z.string(),
-  heading: z.number(),
-});
+import { flightSchema } from "@/lib/FR24/Shema";
 
 type State = {
-  aircraft: z.infer<typeof FlightSchema>[];
+  aircraft: z.infer<typeof flightSchema>[];
 };
 
-export type SetAircraftType = (aircraft: z.infer<typeof FlightSchema>) => void;
+export type SetAircraftType = (aircraft: z.infer<typeof flightSchema>) => void;
 
 type Actions = {
   addAircraft: SetAircraftType;
