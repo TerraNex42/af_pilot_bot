@@ -50,10 +50,6 @@ async function tcas(data: z.infer<typeof formSchema>) {
 
 export default tcas;
 
-interface positionRadar {
-  x: number;
-  y: number;
-}
 
 function createAircraftJson(
   flights: Flight[],
@@ -62,6 +58,7 @@ function createAircraftJson(
 ) {
   const listAircraft: z.infer<typeof flightSchema>[] = flights.map((flight) => {
     return {
+      id: flight.id,
       callsign: flight.callsign as string,
       aircraftType: flight.aircraftCode as string,
       origin: flight.originAirportIata as string,
@@ -75,6 +72,7 @@ function createAircraftJson(
         searchFlight,
         range
       ),
+      toggleState: false
     };
   });
   const jsonList = JSON.stringify(listAircraft);

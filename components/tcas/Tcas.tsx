@@ -12,7 +12,7 @@ function Tcas() {
         <Separator className="my-4" />
         <Radar />
         <Separator className="my-4" />
-        <List />
+        <List/>
     </div>
   );
 }
