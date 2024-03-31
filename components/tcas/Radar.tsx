@@ -34,7 +34,7 @@ function Radar(props: React.SVGProps<SVGSVGElement>) {
         <g
           key={i}
           transform={`translate(${el.positionRadar.x},${el.positionRadar.y})`}
-          onClick={() => setToggle(el)}
+          onClick={() => setToggle(el.id)}
         >
           <PlaneIcon variant={"minus"} color="blue" />
         </g>

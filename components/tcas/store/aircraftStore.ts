@@ -11,7 +11,7 @@ type State = {
 };
 
 export type SetAircraftType = (aircraft: z.infer<typeof flightSchema>) => void;
-export type toggleState = (aircraft: z.infer<typeof flightSchema>) => void;
+export type toggleState = (id: string) => void;
 
 type Actions = {
   addAircraft: SetAircraftType;
@@ -32,12 +32,12 @@ const useAircraftStore = create<State & Actions>()(
         set((state) => {
           state.aircraft.push(aircraft);
         }),
-      toggleState: (aircraft) =>
+      toggleState: (id) =>
         set((state) => {
-          if (state.toggletItem === aircraft.id) {
+          if (state.toggletItem === id) {
             state.toggletItem = "";
           } else {
-            state.toggletItem = aircraft.id;
+            state.toggletItem = id;
           }
         }),
       reset: () => set(initialState),
