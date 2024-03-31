@@ -5,6 +5,8 @@ import useAircraftStore from "./store/aircraftStore";
 function Radar(props: React.SVGProps<SVGSVGElement>) {
   const flightList = useAircraftStore((state) => state.aircraft);
   const setToggle = useAircraftStore((state) => state.toggleState);
+  const toggleItem = useAircraftStore((state) => state.toggletItem);
+
   return (
     <svg
       width={300}
@@ -13,12 +15,12 @@ function Radar(props: React.SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <circle cx={150} cy={150} r={150} fill="red" />
-      <circle cx={150} cy={150} r={125} fill="orange" />
-      <circle cx={150} cy={150} r={100} fill="green" />
-      <circle cx={150} cy={150} r={75} fill="pink" />
-      <circle cx={150} cy={150} r={50} fill="blue" />
-      <circle cx={150} cy={150} r={25} fill="green" />
+      <circle cx={150} cy={150} r={150} fill="#475569" />
+      <circle cx={150} cy={150} r={125} fill="#64748b" />
+      <circle cx={150} cy={150} r={100} fill="#475569" />
+      <circle cx={150} cy={150} r={75} fill="#64748b" />
+      <circle cx={150} cy={150} r={50} fill="#475569" />
+      <circle cx={150} cy={150} r={25} fill="#64748b" />
       <path stroke="#fff" strokeWidth={2} d="M150 0v140" />
       <g transform="translate(-1,10)">
         <path
@@ -36,7 +38,7 @@ function Radar(props: React.SVGProps<SVGSVGElement>) {
           transform={`translate(${el.positionRadar.x},${el.positionRadar.y})`}
           onClick={() => setToggle(el.id)}
         >
-          <PlaneIcon variant={"minus"} color="blue" />
+          <PlaneIcon variant={el.id === toggleItem ? "minus" : "plus"} color="blue" />
         </g>
       ))}
     </svg>

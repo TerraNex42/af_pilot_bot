@@ -47,38 +47,40 @@ export default function List() {
           <AccordionTrigger>{aircraft.callsign}</AccordionTrigger>
           <AccordionContent>
             <Table>
-              <TableBody >
-                <TableRow className="bg-slate-50" >
-                  <TableCell className="font-medium">Aircraft Type</TableCell>
-                  <TableCell className="text-right">
+              <TableBody>
+                <TableRow className="bg-slate-50">
+                  <TableCell className="font-medium border-r-2 border-b-2">
+                    Aircraft Type
+                  </TableCell>
+                  <TableCell className="text-right border-b-2">
                     {aircraft.aircraftType}
                   </TableCell>
                 </TableRow>
                 <TableRow className="bg-slate-50">
-                  <TableCell className="font-medium">Origin</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="font-medium border-r-2 border-b-2">Origin</TableCell>
+                  <TableCell className="text-right border-b-2">
                     {aircraft.origin}
                   </TableCell>
                 </TableRow>
                 <TableRow className="bg-slate-50">
-                  <TableCell className="font-medium">Destination</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="font-medium border-r-2 border-b-2">Destination</TableCell>
+                  <TableCell className="text-right border-b-2">
                     {aircraft.destination}
                   </TableCell>
                 </TableRow>
                 <TableRow className="bg-slate-50">
-                  <TableCell className="font-medium">Speed</TableCell>
-                  <TableCell className="text-right">{aircraft.speed}</TableCell>
+                  <TableCell className="font-medium border-r-2 border-b-2">Speed</TableCell>
+                  <TableCell className="text-right border-b-2">{aircraft.speed}</TableCell>
                 </TableRow>
                 <TableRow className="bg-slate-50">
-                  <TableCell className="font-medium">Altitude</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="font-medium border-r-2 border-b-2">Altitude</TableCell>
+                  <TableCell className="text-right border-b-2">
                     {aircraft.altitude}
                   </TableCell>
                 </TableRow>
                 <TableRow className="bg-slate-50">
-                  <TableCell className="font-medium">Heading</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="font-medium border-r-2 border-b-2">Heading</TableCell>
+                  <TableCell className="text-right border-b-2">
                     {aircraft.heading}
                   </TableCell>
                 </TableRow>

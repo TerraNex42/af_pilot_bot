@@ -7,12 +7,12 @@ import List from "./List";
 
 function Tcas() {
   return (
-    <div>
-        <TcasSearch />
-        <Separator className="my-4" />
-        <Radar />
-        <Separator className="my-4" />
-        <List/>
+    <div className="flex flex-col p-1">
+      <TcasSearch />
+      <Separator className="my-4" />
+      <Radar className="place-self-center" />
+      <Separator className="my-4" />
+      <List />
     </div>
   );
 }

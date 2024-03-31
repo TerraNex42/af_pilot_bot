@@ -19,7 +19,11 @@ function PlaneIcon( props : PlaneIconType) {
           x="1"
           stroke-width="2"
           stroke="#000"
-          fill="rgba(124,240,10,0.5)"
+          fill={
+            props.variant === "plus"
+              ? "rgba(124,240,10,0.5)"
+              : "rgba(255, 101, 118, 0.5)"
+          }
         />
         <rect
           id="svg_2"

@@ -56,7 +56,7 @@ function createAircraftJson(
   searchFlight: Flight,
   range: number
 ) {
-  const listAircraft: z.infer<typeof flightSchema>[] = flights.map((flight) => {
+  let listAircraft: z.infer<typeof flightSchema>[] = flights.map((flight) => {
     return {
       id: flight.id,
       callsign: flight.callsign as string,
@@ -75,6 +75,8 @@ function createAircraftJson(
       toggleState: false
     };
   });
+  console.log(listAircraft);
+  listAircraft = listAircraft.filter(aircraft => { return aircraft.positionRadar.x < 300 && aircraft.positionRadar.x > 0 && aircraft.positionRadar.y < 300 && aircraft.positionRadar.y > 0})
   const jsonList = JSON.stringify(listAircraft);
   console.log(jsonList);
   return jsonList;
