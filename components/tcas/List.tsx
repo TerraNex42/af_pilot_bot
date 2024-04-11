@@ -21,7 +21,7 @@ export default function List() {
   const flights = useAircraftStore((state) => state.aircraft);
   const toggleItem = useAircraftStore((state) => state.toggletItem);
   const setToggle = useAircraftStore((state) => state.toggleState);
-  console.log(flights);
+  //console.log(flights);
 
   return (
     <Accordion
