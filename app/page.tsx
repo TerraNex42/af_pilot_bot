@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useState } from 'react';
-import { useBackButton, useInitData, useMainButton } from '@tma.js/sdk-react'
+import { useEffect, useMemo, useState } from "react";
+import { useBackButton, useInitData, useMainButton } from "@tma.js/sdk-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Tcas from '@/components/tcas/Tcas';
-
+import Tcas from "@/components/tcas/Tcas";
 
 /**
  * Displays current application init data.
@@ -14,11 +13,9 @@ function InitData() {
 
   const initDataJson = useMemo(() => {
     if (!initData) {
-      return 'Init data is empty.';
+      return "Init data is empty.";
     }
-    const { authDate, chat, hash, canSendAfter, queryId, receiver, user, startParam } = initData;
-
-    return JSON.stringify({
+    const {
       authDate,
       chat,
       hash,
@@ -27,14 +24,27 @@ function InitData() {
       receiver,
       user,
       startParam,
-    }, null, ' ');
+    } = initData;
+
+    return JSON.stringify(
+      {
+        authDate,
+        chat,
+        hash,
+        canSendAfter,
+        queryId,
+        receiver,
+        user,
+        startParam,
+      },
+      null,
+      " "
+    );
   }, [initData]);
 
   return (
     <pre>
-      <code>
-        {initDataJson}
-      </code>
+      <code>{initDataJson}</code>
     </pre>
   );
 }
@@ -49,7 +59,20 @@ export default function Home() {
         <TabsTrigger value="TNP">TNP</TabsTrigger>
         <TabsTrigger value="Readme">Readme 👀</TabsTrigger>
       </TabsList>
-      <TabsContent value="Home">This is home</TabsContent>
+      <TabsContent value="Home">
+        <p className="leading-relaxed text-justify after:">
+          Ce site n&apos;est pas rattaché à une compagnie aérienne en
+          particulier.
+        </p>
+        <p className="leading-relaxed text-justify">
+          L&apos;utilisation de Telegram permet de s&apos;affranchir des
+          limitations lié à certain réseau wifi en vol. A utiliser sans garanti
+          d&apos;information.
+        </p>
+        <p className="leading-relaxed text-justify">
+          L&apos;information des vols est issue de FlightRadar24.
+        </p>
+      </TabsContent>
       <TabsContent value="Tcas">
         <Tcas />
       </TabsContent>
