@@ -31,7 +31,6 @@ const formSchema = z.object({
   range: z.number().safe().min(5).max(30),
 });
 
-
 export default function TcasSearch() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,18 +45,28 @@ export default function TcasSearch() {
 
   const setAircraft = useAircraftStore((state) => state.addAircraft);
   const resetAircraft = useAircraftStore((state) => state.reset);
+  const resetFormStore = useFormStore((state) => state.resetFormStore);
+  const toggleError = useFormStore((state) => state.toggleIsError);
+  const setErrorMessage = useFormStore((state) => state.setErrorMessage);
 
   const [rangeDisplay, setRangeDisplay] = useState(form.getValues("range"));
+  
+  
 
   //FIXME This code is digisting. Improve the catch of error
 
   const onAction = async (data: z.infer<typeof formSchema>) => {
+    resetFormStore();
     resetAircraft();
-    console.log("data passed : " + data.callsign + data.range);
+    //console.log("data passed : " + data.callsign + data.range);
     const res = await tcas(data);
+    //console.log("response : " + res);
     if (typeof res === "undefined") return;
     const jsonRes = JSON.parse(res);
     if (jsonRes.message) {
+      //console.log("message : " + jsonRes.message);
+      toggleError()
+      setErrorMessage(jsonRes.message)
       return jsonRes.message;
     }
     if (jsonRes.lenght != 0) {
@@ -70,8 +79,7 @@ export default function TcasSearch() {
       <form
         onSubmit={form.handleSubmit(onAction)}
         className={cn(
-          "space-y-8 grid grid-flow-row",
-          isSubmitting ? "blur-sm" : "blur-none"
+          "space-y-8 grid grid-flow-row"
         )}
       >
         <FormField

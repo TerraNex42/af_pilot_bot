@@ -19,12 +19,14 @@ async function tcas(data: z.infer<typeof formSchema>) {
   let flights: Flight[];
   let searchFlight: Flight;
 
-
   try {
     const callsignRegex = /[A-Za-z]{3}\S+$/;
     const callsignMatch = data.callsign.match(callsignRegex);
     if (!callsignMatch) {
-      return "message : Invalid format. Please use a valid callsign code (e.g., XXXYYY(Y) or XXXYYNN).";
+      return JSON.stringify({
+        message:
+          "Invalid format. Please use a valid callsign code (e.g., XXXYYY(Y) or XXXYYNN).",
+      });
     } else {
       airline = callsignMatch.toString().toUpperCase().slice(0, 3);
       console.log("airline :" + airline);
@@ -35,7 +37,7 @@ async function tcas(data: z.infer<typeof formSchema>) {
     flights = await getCurrentFlights(airline);
     searchFlight = flights.filter((f) => f.callsign === callsign)[0];
     if (searchFlight === undefined) {
-      return JSON.stringify({ message: "No flight found" });
+      return JSON.stringify({ message: "No flights found" });
     }
     //Data - 1 to fix out of rendering aircraft
     let boundFlight = await getFlightsAround(searchFlight, data.range - 1);
@@ -49,7 +51,6 @@ async function tcas(data: z.infer<typeof formSchema>) {
 }
 
 export default tcas;
-
 
 function createAircraftJson(
   flights: Flight[],
@@ -72,18 +73,25 @@ function createAircraftJson(
         searchFlight,
         range
       ),
-      toggleState: false
+      toggleState: false,
     };
   });
   console.log(listAircraft);
-  listAircraft = listAircraft.filter(aircraft => { return aircraft.positionRadar.x < 300 && aircraft.positionRadar.x > 0 && aircraft.positionRadar.y < 300 && aircraft.positionRadar.y > 0})
+  listAircraft = listAircraft.filter((aircraft) => {
+    return (
+      aircraft.positionRadar.x < 270 &&
+      aircraft.positionRadar.x > 0 &&
+      aircraft.positionRadar.y < 270 &&
+      aircraft.positionRadar.y > 0
+    );
+  });
   const jsonList = JSON.stringify(listAircraft);
   console.log(jsonList);
   return jsonList;
 }
 
 function rangeToGrid(range: number): number {
-  return ((1 / range) * 60) * 150;
+  return (1 / range) * 60 * 150;
 }
 
 function positionOnGrid(
@@ -95,13 +103,19 @@ function positionOnGrid(
   const scale: number = rangeToGrid(range);
   const relX = originAc.longitude - lon;
   const relY = originAc.latitude - lat;
+  const rotateX =
+    relX * Math.cos(originAc.heading) - relY * Math.sin(originAc.heading);
+  const rotateY =
+    relX * Math.sin(originAc.heading) + relY * Math.cos(originAc.heading);
   console.log(`position X : ${relX}`);
   console.log(`position Y : ${relY}`);
   console.log(`scale  : ${scale}`);
+  console.log(`position rotated X : ${rotateX}`);
+  console.log(`position rotated Y : ${rotateY}`);
 
   return {
-    x: scale * relX + 134,
-    y: scale * relY + 137,
+    x: scale * rotateX + 134 - 30,
+    y: scale * rotateY + 137 - 30,
   };
 }
 
